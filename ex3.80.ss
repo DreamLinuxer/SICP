@@ -1,0 +1,8 @@
+(define (RLC R L C)
+  (lambda (v0 i0)
+    (define vC (integral (delay dvC) v0 dt))
+    (define iL (integral (delayed diL) i0 dt))
+    (define dvC (scale-stream iL (/ -1 C)))
+    (define diL (add-streams (scale-stream iL (- (/ R L)))
+			     (scale-stream vC (/ 1 L))))
+    (stream-map (lambda (x y) (cons x y)) vC iL)))
